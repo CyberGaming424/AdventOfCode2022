@@ -15,7 +15,7 @@ class DayTwo {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    rounds = new ArrayList<String[]>();
+    rounds = new ArrayList<>();
     for (String line : file) {
       rounds.add(line.split(" "));
     }
@@ -26,24 +26,32 @@ class DayTwo {
   private int partOne() {
     int score = 0;
     for (String[] round : rounds) {
-      if (round[1].equalsIgnoreCase("x")) {
-        score += 1;
-        if (round[0].equalsIgnoreCase("c"))
-          score += 6;
-        else if (round[0].equals("a"))
-          score += 3;
-      } else if (round[1].equalsIgnoreCase("y")) {
-        score += 2;
-        if (round[0].equalsIgnoreCase("a"))
-          score += 6;
-        else if (round[0].equals("b"))
-          score += 3;
-      } else if (round[1].equalsIgnoreCase("z")) {
-        score += 3;
-        if (round[0].equalsIgnoreCase("b"))
-          score += 6;
-        else if (round[0].equals("c"))
-          score += 3;
+
+      switch (round[1]){
+        case "X":
+          score++;
+          if(round[0].equalsIgnoreCase("c")){
+            score+=6;
+          }else if(round[0].equalsIgnoreCase("a")){
+            score+=3;
+          }
+          break;
+        case "Y":
+          score+=2;
+          if(round[0].equalsIgnoreCase("a")){
+            score+=6;
+          }else if(round[0].equalsIgnoreCase("b")){
+            score+=3;
+          }
+          break;
+        case "Z":
+          score+=3;
+          if(round[0].equalsIgnoreCase("b")){
+            score+=6;
+          }else if(round[0].equalsIgnoreCase("c")){
+            score+=3;
+          }
+          break;
       }
     }
     return score;
