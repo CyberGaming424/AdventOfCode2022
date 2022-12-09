@@ -6,8 +6,8 @@ import java.util.List;
 
 class DayThree {
 
-  List<String> file;
-  ArrayList<String[]> rucks;
+  List<String> rucks;
+  ArrayList<String[]> splitRucks;
 
   String[] test = {
       "vJrwpWtwJgWrhcsFMMfFFhFp",
@@ -21,27 +21,28 @@ class DayThree {
   public DayThree() {
 
     try {
-      file = Files.readAllLines(Path.of("src/main/java/DayThree.txt"));
+      rucks = Files.readAllLines(Path.of("src/main/java/DayThree.txt"));
     } catch (IOException e) {
       e.printStackTrace();
     }
-    rucks = new ArrayList<>();
-    for (String line : file) {
+    splitRucks = new ArrayList<>();
+    for (String line : rucks) {
 
       String compartmentOne = line.substring(0, (line.length() / 2));
       String compartmentTwo = line.substring((line.length() / 2));
       String[] ruck = { compartmentOne, compartmentTwo };
 
-      rucks.add(ruck);
+      splitRucks.add(ruck);
     }
 
     System.out.println("Part One: " + partOne());
+    System.out.println("Part Two: " + partTwo());
 
   }
 
   private int partOne() {
     int sum = 0;
-    for (String[] ruck : rucks) {
+    for (String[] ruck : splitRucks) {
       boolean itemFound = false;
       String[] compOne = ruck[0].split("");
       String[] compTwo = ruck[1].split("");
@@ -56,6 +57,34 @@ class DayThree {
       }
 
     }
+    return sum;
+  }
+
+  private int partTwo() {
+    int sum = 0;
+
+    for (int ruck = 0; ruck < rucks.size(); ruck++) {
+      boolean itemFound = false;
+      if ((ruck + 1) % 3 == 0) {
+        String[] currRuck = rucks.get(ruck).split("");
+        String[] prevRuck = rucks.get(ruck - 1).split("");
+        String[] secPrevRuck = rucks.get(ruck - 2).split("");
+
+        for (String i : currRuck) {
+          for (String j : prevRuck) {
+            if (j.equals(i)) {
+              for (String l : secPrevRuck) {
+                if (j.equals(l) && !itemFound) {
+                  itemFound = true;
+                  sum += itemPriority(i);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
     return sum;
   }
 
